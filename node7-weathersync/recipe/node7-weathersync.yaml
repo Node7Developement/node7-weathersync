@@ -1,0 +1,14 @@
+name: node7-weathersync
+version: 1.0.1
+author: NODE7 Development Studios
+description: Server-authoritative NODE7 RedM weather and time synchronization using node7-menu and node7-input.
+
+resources:
+  - resource: node7-core
+  - resource: node7-menu
+  - resource: node7-input
+  - resource: node7-weathersync
+
+config:
+  - recipe/permissions.cfg
+  - recipe/start-order.cfg

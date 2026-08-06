@@ -1,0 +1,6 @@
+# Paste this task into the tasks section of the main NODE7 txAdmin recipe.
+- action: download_github
+  src: https://github.com/Node7Developement/node7-weathersync
+  ref: main
+  subpath: node7-weathersync
+  dest: ./resources/[node7]/node7-weathersync
