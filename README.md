@@ -3,6 +3,13 @@
 # node7-weathersync
 
 
+
+
+
+
+
+<img width="1920" height="1080" alt="weathersyncupdated" src="https://github.com/user-attachments/assets/ed817a75-027c-4960-a242-54141a12c86b" />
+
 <img width="1313" height="946" alt="weathersync" src="https://github.com/user-attachments/assets/8561a935-6c01-40f8-9b8d-c64af5622840" />
 
 Server-authoritative RedM weather and time synchronization built for the NODE7 Framework and NODE7 txAdmin recipe.
