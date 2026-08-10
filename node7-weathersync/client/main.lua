@@ -1,7 +1,7 @@
 local SET_WEATHER_TYPE = 0x59174F1AFE095B5A
 local CLEAR_OVERRIDE_WEATHER = 0x80A398F16FFE3CC3
-local SET_CLOCK_TIME = 0x3A52C59FFB2DEED8
-local PAUSE_CLOCK = 0x4D1A590C92BF377E
+local NETWORK_OVERRIDE_CLOCK_TIME = 0x669E223E64B1903C
+local NETWORK_CLEAR_CLOCK_TIME_OVERRIDE = 0xD972DF67326F966E
 local SET_MILLISECONDS_PER_GAME_MINUTE = 0x04EEDB3848DACF68
 
 local syncedState = nil
@@ -81,15 +81,25 @@ local function applyClock()
     if not syncedState then return end
 
     local minuteOfDay = currentMinuteOfDay()
-    local hour = math.floor(minuteOfDay / 60)
-    local minute = math.floor(minuteOfDay % 60)
+    local wholeMinute = math.floor(minuteOfDay)
+    local hour = math.floor(wholeMinute / 60)
+    local minute = wholeMinute % 60
+    local second = math.floor((minuteOfDay - wholeMinute) * 60)
+    local millisecondsPerGameMinute = math.floor(tonumber(syncedState.millisecondsPerGameMinute)
+        or Config.DefaultMillisecondsPerGameMinute)
 
-    Citizen.InvokeNative(PAUSE_CLOCK, true, 0)
+    -- Apply the synchronized clock once and let RedM advance it natively.
+    -- Re-applying this in a fast loop causes visible clock stepping and needless
+    -- client work. The server only sends occasional drift corrections.
+    Citizen.InvokeNative(SET_MILLISECONDS_PER_GAME_MINUTE, millisecondsPerGameMinute)
     Citizen.InvokeNative(
-        SET_MILLISECONDS_PER_GAME_MINUTE,
-        math.floor(tonumber(syncedState.millisecondsPerGameMinute) or Config.DefaultMillisecondsPerGameMinute)
+        NETWORK_OVERRIDE_CLOCK_TIME,
+        hour,
+        minute,
+        second,
+        0,
+        syncedState.timeFrozen == true
     )
-    Citizen.InvokeNative(SET_CLOCK_TIME, hour, minute, 0)
 end
 
 local function showInput(data)
@@ -339,19 +349,8 @@ end)
 AddEventHandler('onClientResourceStop', function(resourceName)
     if resourceName ~= GetCurrentResourceName() then return end
 
-    Citizen.InvokeNative(PAUSE_CLOCK, false, 0)
+    Citizen.InvokeNative(NETWORK_CLEAR_CLOCK_TIME_OVERRIDE)
     Citizen.InvokeNative(CLEAR_OVERRIDE_WEATHER)
-end)
-
-CreateThread(function()
-    while true do
-        if syncedState then
-            applyClock()
-            Wait(Config.ClientClockUpdateMs)
-        else
-            Wait(1000)
-        end
-    end
 end)
 
 CreateThread(function()

@@ -6,7 +6,7 @@ rdr3_warning 'I acknowledge that this is a prerelease build of RedM, and I am aw
 name 'node7-weathersync'
 author 'NODE7 Development Studios'
 description 'Server-authoritative RedM weather and time synchronization using NODE7 menu and input resources.'
-version '1.0.1'
+version '1.0.5'
 
 lua54 'yes'
 

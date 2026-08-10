@@ -62,3 +62,20 @@ Granted by default to:
 Edit `config.lua` to change default weather, default time, transition limits, clock speed limits, synchronization intervals, and KVP persistence.
 
 No SQL is required. Disable every other weather or time synchronization resource before starting this one.
+
+## Time preset behavior
+
+- Dawn: 06:00
+- Morning: 09:00
+- Noon: 12:00
+- Evening: 20:00
+- Midnight: 00:00
+- Time changes use RedM multiplayer `NETWORK_OVERRIDE_CLOCK_TIME`, so presets and custom input change the actual network world time and lighting for connected players.
+
+
+## Optimization
+
+- Time changes are event-driven; there is no fast client clock polling loop.
+- RedM advances the synchronized clock natively using the configured milliseconds-per-game-minute value.
+- The server only performs a lightweight drift correction every 5 minutes and immediately syncs after admin changes or player load.
+- Fractional minutes are converted to seconds during corrections to avoid visible backward clock stepping.

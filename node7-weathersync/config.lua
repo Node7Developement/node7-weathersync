@@ -15,8 +15,7 @@ Config.MaximumTransitionSeconds = 120
 Config.MinimumMillisecondsPerGameMinute = 250
 Config.MaximumMillisecondsPerGameMinute = 60000
 
-Config.ServerSyncIntervalMs = 10000
-Config.ClientClockUpdateMs = 500
+Config.ServerSyncIntervalMs = 300000
 Config.WeatherReapplyIntervalMs = 60000
 Config.RequestCooldownMs = 500
 Config.SyncRequestCooldownMs = 1000
@@ -27,6 +26,6 @@ Config.TimePresets = {
     { label = 'Dawn', hour = 6, minute = 0 },
     { label = 'Morning', hour = 9, minute = 0 },
     { label = 'Noon', hour = 12, minute = 0 },
-    { label = 'Evening', hour = 18, minute = 0 },
+    { label = 'Evening', hour = 20, minute = 0 },
     { label = 'Midnight', hour = 0, minute = 0 }
 }
